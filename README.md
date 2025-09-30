@@ -1,74 +1,88 @@
-Mini Project 4 - Large Language Models (LLMs) and Retrieval Augmented Generation (RAG)
-📌 Problem Statement
+# Mini Project 4 - Large Language Models (LLMs) and Retrieval Augmented Generation (RAG)
 
-The rapid growth of unstructured data such as PDFs, articles, and documents creates challenges for organizations to retrieve relevant, context-aware insights.
-Traditional search methods often fail because they only match keywords rather than understanding meaning.
+## Short description
+End-to-end implementation of a Retrieval Augmented Generation (RAG) pipeline:
+load PDF documents, chunk text, create embeddings, store them in a vector DB (Chroma),
+and generate grounded answers using an on-device LLM (llama-cpp via llama-cpp-python).
 
-This project explores how Large Language Models (LLMs) integrated with Retrieval Augmented Generation (RAG) can improve information retrieval and question-answering systems.
+## Table of Contents
+- [Problem Statement](#problem-statement)
+- [Business Context](#business-context)
+- [Project Objectives](#project-objectives)
+- [Features](#features)
+- [Dataset](#dataset)
+- [Project Structure](#project-structure)
+- [Requirements](#requirements)
+- [Installation & Setup](#installation--setup)
+  - [Google Colab](#google-colab)
+  - [Local (Linux/Windows)](#local-linuxwindows)
+- [Usage / How to run](#usage--how-to-run)
+  - [Mount Google Drive (Colab)](#mount-google-drive-colab)
+  - [Prepare and run cells in order](#prepare-and-run-cells-in-order)
+  - [Example: Query + Generate](#example-query--generate)
+- [Notes & Tips](#notes--tips)
+- [Results & Findings](#results--findings)
+- [Future Work](#future-work)
+- [License](#license)
+- [Acknowledgements & References](#acknowledgements--references)
+- [Contact](#contact)
 
-🎯 Business Context
+## Problem Statement
+Large unstructured documents (PDFs, reports) are hard to search and reason over with simple keyword search.
+RAG combines retrieval from a vector store with an LLM to produce context-grounded answers and reduce hallucination.
 
-Businesses rely on large volumes of reports, case studies, and research papers. Decision-making becomes slow when employees manually search through these documents.
-With RAG, organizations can:
+## Business Context
+Organizations need fast, accurate access to knowledge in documents. A RAG pipeline allows:
+- Faster decision making by surfacing relevant document passages.
+- Grounded responses from LLMs, improving trust.
+- Scalable knowledge search for teams and products.
 
-Reduce the time spent on document analysis.
+## Project Objectives
+1. Load PDF documents and inspect content.
+2. Preprocess and chunk text to manageable context sizes.
+3. Compute embeddings with a sentence-transformer model.
+4. Store embeddings in ChromaDB and support similarity search.
+5. Use an LLM (via `llama-cpp-python`) to generate answers from retrieved context.
+6. Provide reproducible instructions for Colab and local environments.
 
-Improve accuracy by grounding LLM responses in real data.
+## Features
+- PDF ingestion with page-level preview.
+- Recursive character splitting to create overlapping chunks.
+- Sentence-transformers embeddings pipeline.
+- ChromaDB vector store for retrieval.
+- LLM generation via llama-cpp with optional GPU support.
+- Notebook-based, runnable in Google Colab.
 
-Enhance knowledge management across industries.
+## Dataset
+- Example document used in the notebook: *How Apple is Organized for Innovation* (HBR).
+- The notebook loads the PDF from Google Drive (or local path).
+- Replace the PDF path variable in the notebook with your own document when required.
 
-🛠️ Project Objectives
+## Project Structure
+.
+├── Project_4.ipynb # Main notebook (Colab-ready)
+├── README.md # This file
+├── requirements.txt # (optional) pip list
+└── models/ # (optional) place for local model files
+## Requirements
+- Python 3.10+ (noted in notebook as tested on Python 3.12 in Colab)
+- Key libraries (exact versions used in notebook):
+  - numpy==1.26.4
+  - llama-cpp-python==0.2.28
+  - tiktoken
+  - pypdf
+  - langchain
+  - langchain-community
+  - chromadb
+  - sentence-transformers
+  - huggingface_hub
 
-Load real-world documents (PDF format).
+## Installation & Setup
 
-Preprocess & chunk the documents into smaller sections.
-
-Generate embeddings using sentence-transformers.
-
-Store embeddings in a vector database (ChromaDB).
-
-Query the vector store to fetch contextually relevant chunks.
-
-Use an LLM (llama-cpp) to generate final, human-like answers.
-
-🔍 Features
-
-PDF ingestion and data overview.
-
-Recursive character text splitting for context windows.
-
-Vector storage and similarity search using ChromaDB.
-
-LLM-powered responses (RAG pipeline).
-
-Fully reproducible on Google Colab with GPU support.
-
-📂 Dataset
-
-Document Used: How Apple is Organized for Innovation (HBR, 2020).
-
-Stored in Google Drive and accessed in the notebook.
-
-Preprocessed into smaller chunks for embedding and retrieval.
-
-⚙️ Technologies and Libraries
-
-Programming Language: Python 3.12
-
-Libraries:
-
-numpy==1.26.4
-
-llama-cpp-python==0.2.28 (with GPU acceleration)
-
-tiktoken
-
-pypdf
-
-langchain, langchain-community
-
-chromadb
-
-sentence-transformers
-
-huggingface_hub
+### Google Colab
+Open the notebook in Colab and run the install cell(s). Example commands used in the notebook:
+```bash
+# run in Colab cell
+!pip install --upgrade --force-reinstall numpy==1.26.4
+!CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install llama-cpp-python==0.2.28 --force-reinstall --upgrade --no-cache-dir
+!pip install tiktoken pypdf langchain langchain-community chromadb sentence-transformers huggingface_hub
